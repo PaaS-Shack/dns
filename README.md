@@ -7,13 +7,34 @@ I am taking pull request tips and advice.
 
 Major item I would like to include is dnssec.
 
+
+# Config
+NS reocrds are populated from "ddns.domains.nameservers" when creating a new domain. 
+When creating a new domain a SOA record is created with the "ddns.domains.hostmaster"
+
+Your config should look like
+```js
+defaultConfig: {
+    "ddns.domains.domain": "example.com",
+    "ddns.domains.hostmaster": "hostmaster.example.com",
+    "ddns.domains.nameservers": [
+        "orion.example.com",
+        "hades.example.com",
+        "zeus.example.com"
+    ],
+}
+```
+
 # Sync all agent records
 Maybe sometimes records become out of sync. This might happen when an agent missed the broadcast for remove and create record event.
 ```
 call v1.domains.sync
 ```
 
-# Bind nameserver to agent IP
+# agent
+The agent should run on every server you want to be a resolver services/ddns.agent.js You can have as many nameservers as you want.
+
+## Bind nameserver to agent IP
 By defualt agent only binds to 127.0.0.1 and ::1
 It can resolve to both IPv6 and IPv4
 ```
