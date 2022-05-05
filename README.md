@@ -6,6 +6,12 @@ It also has basic account services required by https://github.com/icebob/kantab/
 
 
 # Sync all agent records
+Maybe sometimes records become out of sync. This might happen when an agent missed the broadcast for remove and create record event.
+```
+call v1.domains.sync
+```
+
+# bind nameserver to agent ip
 By defualt agent only binds to 127.0.0.1 and ::1
 ```
 dcall agent-name v1.ddns.bind --address=10.0.0.1 --proxy=true
