@@ -1,0 +1,31 @@
+{
+  "name": "dns",
+  "version": "1.0.0",
+  "description": "MolecularJS nameserver/resolver/dohs",
+  "scripts": {},
+  "keywords": [
+    "microservices",
+    "moleculer"
+  ],
+  "author": "FLYBYME",
+  "dependencies": {
+    "@moleculer/database": "git+https://github.com/moleculerjs/database.git",
+    "cache-cleaner-mixin": "git+https://github.com/FLYBYME/cache-cleaner-mixin.git",
+    "config-mixin": "git+https://github.com/FLYBYME/config-mixin.git",
+    "cron-mixin": "git+https://github.com/FLYBYME/cron-mixin.git",
+    "db-mixin": "git+https://github.com/FLYBYME/db-mixin.git",
+    "dns2": "^2.0.1",
+    "membership-mixin": "git+https://github.com/FLYBYME/membership-mixin.git",
+    "moleculer": "^0.14.19",
+    "mongodb": "^4.4.1",
+    "native-dns-packet": "^0.1.1",
+    "nedb": "^1.8.0",
+    "raft-logger-redis": "^0.2.16",
+    "statsd-metrics": "0.0.2",
+    "tldjs": "^2.3.1"
+  },
+  "engines": {
+    "node": ">= 12.x.x"
+  },
+  "jest": {}
+}
