@@ -3,7 +3,9 @@
 To use this module requires both https://github.com/FLYBYME/config and https://github.com/FLYBYME/config-mixin
 It also has basic account services required by https://github.com/icebob/kantab/blob/master/backend/services/accounts.service.js
 
+I am taking pull request tips and advice.
 
+Major item I would like to include is dnssec.
 
 # Sync all agent records
 Maybe sometimes records become out of sync. This might happen when an agent missed the broadcast for remove and create record event.
@@ -11,11 +13,13 @@ Maybe sometimes records become out of sync. This might happen when an agent miss
 call v1.domains.sync
 ```
 
-# bind nameserver to agent ip
+# Bind nameserver to agent IP
 By defualt agent only binds to 127.0.0.1 and ::1
+It can resolve to both IPv6 and IPv4
 ```
 dcall agent-name v1.ddns.bind --address=10.0.0.1 --proxy=true
 dcall agent-name v1.ddns.bind --address=123.123.123.124 --proxy=false
+dcall agent-name v1.ddns.bind --address=2001:0db8:85a3:0000:0000:8a2e:0370:7334 --proxy=false
 ```
 
 # Domains
