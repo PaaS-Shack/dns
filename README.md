@@ -37,6 +37,9 @@ The agent should run on every server you want to be a resolver services/ddns.age
 ## Bind nameserver to agent IP
 By defualt agent only binds to 127.0.0.1 and ::1
 It can resolve to both IPv6 and IPv4
+
+If proxy=true the agent will call v1.dohs.query and will become a recursive resolver. This is so the agent can become a local network resolver.
+On a public IP this maybe dangerous idea but its your choice.
 ```
 dcall agent-name v1.ddns.bind --address=10.0.0.1 --proxy=true
 dcall agent-name v1.ddns.bind --address=123.123.123.124 --proxy=false
@@ -262,6 +265,9 @@ call v1.domains.records.remove --#userID=GMk6dpXx8nS4WeNW3XZB --id=BNkjPMLDy3HqG
 ```
 # DNS over https
 By default dohs will cache querys for their ttl time
+DoHs has 3 resolvers. google, cloudflare and cleanbrowsing
+Adding the flag --provider=cleanbrowsing will use cleanbrowsing as the upsteam resolver default is cloudflare
+
 ```
 call v1.dohs.query --fqdn=google.com --type=A --cache=false
 ```
