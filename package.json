@@ -20,8 +20,6 @@
     "mongodb": "^4.4.1",
     "native-dns-packet": "^0.1.1",
     "nedb": "^1.8.0",
-    "raft-logger-redis": "^0.2.16",
-    "statsd-metrics": "0.0.2",
     "tldjs": "^2.3.1"
   },
   "engines": {
