@@ -271,3 +271,53 @@ Adding the flag --provider=cleanbrowsing will use cleanbrowsing as the upsteam r
 ```
 call v1.dohs.query --fqdn=google.com --type=A --cache=false
 ```
+# DNS resolver
+The DNS resolver is like DoHs but just uses node UDP. It can be useful to run on every server and test for DNS propagation or if anycast DNS is been used.
+```
+call v1.domains.resolver.resolve --fqdn=google.com --type=A --provider=opendns
+```
+## Result
+```js
+[ '142.251.41.46' ]
+```
+
+
+
+### list of resolvers
+```js
+[
+    { "name": "google", "ip": "8.8.8.8" },
+    { "name": "quad", "ip": "9.9.9.9" },
+    { "name": "opendns", "ip": "208.67.222.220" },
+    { "name": "verizon_fios_business", "ip": "98.113.146.9" },
+    { "name": "att_services", "ip": "12.121.117.201" },
+    { "name": "corporate_west_computer_systems", "ip": "66.206.166.2" },
+    { "name": "quad", "ip": "149.112.112.112" },
+    { "name": "cogecodata", "ip": "66.199.45.225" },
+    { "name": "ionica_llc", "ip": "176.103.130.130" },
+    { "name": "liquid_telecommunications_ltd", "ip": "5.11.11.5" },
+    { "name": "nforce_entertainment_bv", "ip": "185.107.80.84" },
+    { "name": "association_gitoyen", "ip": "80.67.169.12" },
+    { "name": "prioritytelecom_spain_sa", "ip": "212.230.255.1" },
+    { "name": "oskar_emmenegger", "ip": "194.209.157.109" },
+    { "name": "nemoxnet", "ip": "83.137.41.9" },
+    { "name": "docklands_data_centre_ltd", "ip": "81.24.196.76" },
+    { "name": "mentor_it_as", "ip": "176.62.205.201" },
+    { "name": "deutsche_telekom_ag", "ip": "195.243.214.4" },
+    { "name": "gestion_de_direccionamiento_uninet", "ip": "201.144.135.211" },
+    { "name": "claro_sa", "ip": "200.248.178.54" },
+    { "name": "ohana_communications_sdn_bhd", "ip": "103.26.250.4" },
+    { "name": "cloudflare_inc", "ip": "1.1.1.1" },
+    { "name": "pacific_internet", "ip": "61.8.0.113" },
+    { "name": "iconz_ltd", "ip": "210.48.77.68" },
+    { "name": "tefincom_sa", "ip": "103.86.99.100" },
+    { "name": "lg_dacom_corporation", "ip": "164.124.101.2" },
+    { "name": "shenzhen_sunrise_technology_co", "ip": "202.46.32.187" },
+    { "name": "teknet_yazlim", "ip": "31.7.37.37" },
+    { "name": "mahanagar_telephone_nigam_limited", "ip": "203.94.227.70" },
+    { "name": "multinet_pakistan_pvt_ltd", "ip": "125.209.116.22" },
+    { "name": "cloudity_network", "ip": "185.83.212.30" },
+    { "name": "daniel_cid", "ip": "185.228.168.9" },
+    { "name": "pabna_cable_vision", "ip": "103.153.154.2" }
+]
+```
