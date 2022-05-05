@@ -271,6 +271,18 @@ Adding the flag --provider=cleanbrowsing will use cleanbrowsing as the upsteam r
 ```
 call v1.dohs.query --fqdn=google.com --type=A --cache=false
 ```
+```js
+[
+  {
+    name: 'google.com',
+    type: 1,
+    class: 1,
+    ttl: 300,
+    address: '142.251.41.46',
+    data: '142.251.41.46'
+  }
+]
+```
 # DNS resolver
 The DNS resolver is like DoHs but just uses node UDP. It can be useful to run on every server and test for DNS propagation or if anycast DNS is been used.
 ```
