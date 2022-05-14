@@ -288,11 +288,9 @@ module.exports = {
 
 				if (!params.cache) {
 					const results = await this.actions.resolveProvider({ ...params }, { parentCtx: ctx });
-					console.log(results)
+					//console.log(results)
 					return results
 				}
-
-				const queryStr = `${params.fqdn}.${params.type}.${params.provider}`
 
 				await this.lock.acquire(key);
 

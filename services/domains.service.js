@@ -201,7 +201,7 @@ module.exports = {
 				} else if (params.owner) {
 					query.owner = params.owner
 				}
-				console.log(query)
+				
 				return this.findEntity(ctx, {
 					query: query,
 					scope: false
@@ -291,9 +291,7 @@ module.exports = {
 						reason: settled[index].reason,
 					});
 				}
-
-
-				console.log(result)
+				
 				return result
 			}
 		},

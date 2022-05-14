@@ -299,13 +299,9 @@ module.exports = {
 				const res = await ctx.call("v1.domains.getDomain", {
 					id: params.domain, member: ctx.meta.userID
 				});
-				console.log({
-					id: params.domain, owner: ctx.meta.userID
-				}, res)
 
 				if (res) {
 					query.domain = params.domain;
-					console.log(query)
 					return query;
 				}
 				throw new MoleculerClientError(
