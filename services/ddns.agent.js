@@ -595,6 +595,8 @@ module.exports = {
                         if (answers) {
                             response.answers.push(...answers)
                             send(response);
+
+
                         } else {
                             this.stats.misses++;
                             send(response);
@@ -777,7 +779,7 @@ module.exports = {
             const types = {};
 
             for (let [type, map] of Object.entries(this.maps)) {
-                if (!types[type]) {
+                if (isNaN(types[type])) {
                     types[type] = 0;
                 }
                 for (var [key, value] of map.entries()) {
