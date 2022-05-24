@@ -209,8 +209,15 @@ module.exports = {
             auth: "required",
             async handler(ctx) {
                 const params = Object.assign({}, ctx.params);
+                const types = Object.keys(this.maps);
+                const result = {};
 
-                return this.maps
+                for (let index = 0; index < types.length; index++) {
+                    const type = types[index];
+                    result[type] = Array.from(this.maps[type].entries())
+                }
+
+                return result
 
             }
         },
@@ -783,9 +790,9 @@ module.exports = {
             proxys: 0,
             proxysTotal: 0,
         }
-        
+
         const interval = 10 * 1000
-        
+
         this.timerStats = setInterval(() => {
 
             let hits = 0
