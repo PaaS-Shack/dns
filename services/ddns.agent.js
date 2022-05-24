@@ -214,6 +214,20 @@ module.exports = {
 
             }
         },
+        stats: {
+            cache: false,
+            params: {
+
+            },
+            permissions: ['teams.create'],
+            auth: "required",
+            async handler(ctx) {
+                const params = Object.assign({}, ctx.params);
+
+                return this.stats
+
+            }
+        },
         logging: {
             params: {
                 enable: { type: "boolean", default: true, optional: true }
