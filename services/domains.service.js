@@ -24,7 +24,7 @@ module.exports = {
 
 	mixins: [
 		DbService({
-			entityChangedEventMode:'emit',
+			entityChangedEventMode: 'emit',
 			cache: {
 				additionalKeys: ["#userID"]
 			}, collection: 'domains'
@@ -83,6 +83,7 @@ module.exports = {
 				onCreate: ({ ctx, params, value }) => psl.parse(params.domain.replace('*.', '').replace('_', '')).sld
 			},
 
+			
 			description: {
 				type: "string",
 				required: false,
@@ -201,7 +202,7 @@ module.exports = {
 				} else if (params.owner) {
 					query.owner = params.owner
 				}
-				
+
 				return this.findEntity(ctx, {
 					query: query,
 					scope: false
@@ -265,34 +266,36 @@ module.exports = {
 
 
 		sync: {
-			rest: "GET /sync/:record",
+			rest: "GET /sync",
 			params: {
 				target: { type: "string", min: 3, optional: true },
 			},
 			permissions: ['domains.sync'],
 			async handler(ctx) {
-				const params = Object.assign({}, ctx.params);
-				const list = await ctx.call("$node.list");
-
-				const result = [];
-				const promises = [];
-				for (let index = 0; index < list.length; index++) {
-					const node = list[index];
-					promises.push(ctx.call('v1.ddns.agent.sync', {}, { nodeID: node.id }));
-				}
-
-				const settled = await Promise.allSettled(promises);
-				for (let index = 0; index < list.length; index++) {
-					const node = list[index];
-					result.push({
-						nodeID: node.id,
-						status: settled[index].status,
-						info: settled[index].value,
-						reason: settled[index].reason,
-					});
-				}
+			
+				return this.scrapeAgents(ctx, 'v1.ddns.agent.sync')
+			}
+		},
+		maps: {
+			rest: "GET /maps",
+			params: {
+				target: { type: "string", min: 3, optional: true },
+			},
+			permissions: ['domains.maps'],
+			async handler(ctx) {
 				
-				return result
+				return this.scrapeAgents(ctx, 'v1.ddns.agent.maps')
+			}
+		},
+		stats: {
+			rest: "GET /stats",
+			params: {
+				target: { type: "string", min: 3, optional: true },
+			},
+			permissions: ['domains.stats'],
+			async handler(ctx) {
+				
+				return this.scrapeAgents(ctx, 'v1.ddns.agent.stats')
 			}
 		},
 	},
@@ -306,6 +309,29 @@ module.exports = {
 	 * Methods
 	 */
 	methods: {
+		async scrapeAgents(ctx, action, params = {}) {
+			const list = await ctx.call("$node.list");
+
+			const result = [];
+			const promises = [];
+			for (let index = 0; index < list.length; index++) {
+				const node = list[index];
+				promises.push(ctx.call(action, params, { nodeID: node.id }));
+			}
+
+			const settled = await Promise.allSettled(promises);
+			for (let index = 0; index < list.length; index++) {
+				const node = list[index];
+				result.push({
+					nodeID: node.id,
+					status: settled[index].status,
+					info: settled[index].value,
+					reason: settled[index].reason,
+				});
+			}
+
+			return result
+		},
 		validateDomain({ ctx, params, value }) {
 			return this.countEntities(ctx, {
 				query: {
