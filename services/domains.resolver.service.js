@@ -71,6 +71,19 @@ module.exports = {
                 return provider.resolve(params.fqdn, params.type);
             }
         },
+        reverse: {
+            params: {
+                ip: { type: "string", optional: false },
+                provider: { type: "enum", values: providers.map((provider) => provider.name), default: 'google', optional: true },
+            },
+            async handler(ctx) {
+                const params = Object.assign({}, ctx.params);
+
+                const provider = this.providers[params.provider];
+
+                return provider.reverse(params.ip);
+            }
+        },
         propagation: {
             params: {
                 fqdn: { type: "string", optional: false },

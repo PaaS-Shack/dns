@@ -223,7 +223,46 @@ module.exports = {
 			async handler(ctx) {
 				return this.findEntities(ctx, {});
 			}
+		},
+		resolveRecord: {
+			params: {
+
+				fqdn: { type: "string", optional: true },
+				type: { type: "string", optional: true },
+				data: { type: "string", optional: true },
+			},
+			async handler(ctx) {
+				const params = Object.assign({}, ctx.params);
+				return this.findEntity(null, {
+					query: {
+						...params
+					}
+				});
+			}
+		},
+		clean: {
+			params: {
+
+			},
+			async handler(ctx) {
+				const params = Object.assign({}, ctx.params);
+				const records = await this.findEntities(null, {
+					query: {
+						data: '50.7.176.250'
+					}
+				});
+				for (let index = 0; index < records.length; index++) {
+					const record = records[index];
+					await this.removeEntity(null, {
+						id: record.id
+					});
+				}
+				return records
+			}
+
 		}
+
+
 	},
 
 	/**
@@ -232,7 +271,6 @@ module.exports = {
 	events: {
 		async "domains.created"(ctx) {
 			const domain = ctx.params.data;
-			console.log(this.config)
 			const soa = {
 				fqdn: domain.domain,
 				type: "SOA",
@@ -259,7 +297,7 @@ module.exports = {
 			}, { parentCtx: ctx })
 
 			const nameservers = this.config["ddns.domains.nameservers"]
-			
+
 			for (let index = 0; index < nameservers.length; index++) {
 				const data = nameservers[index];
 				await this.actions.create({
