@@ -75,7 +75,7 @@ module.exports = {
         createRecord: {
             params: {
                 fqdn: { type: "string", min: 3, optional: false },
-                type: { type: "enum", values: ["A", "AAAA", "CNAME", "SOA", "MX", "NS", "TXT", "CAA"], optional: false },
+                type: { type: "enum", values: ["A", "AAAA", "CNAME", "SOA", "MX", "NS", "TXT", "CAA",'SRV'], optional: false },
                 data: { type: "string", optional: false },
                 replace: { type: "string", optional: true },
 
@@ -131,7 +131,7 @@ module.exports = {
                 id: { type: "string", min: 3, optional: false },
                 fqdn: { type: "string", min: 3, optional: false },
                 network: { type: "string", optional: true },
-                type: { type: "enum", values: ["A", "AAAA", "CNAME", "SOA", "MX", "NS", "TXT", "CAA"], optional: false },
+                type: { type: "enum", values: ["A", "AAAA", "CNAME", "SOA", "MX", "NS", "TXT", "CAA",'SRV'], optional: false },
             },
             permissions: ['ddns.create'],
             async handler(ctx) {
@@ -361,6 +361,17 @@ module.exports = {
                         tag: record.tag,
                         value: record.data
                     }
+                case 'SRV':
+                    return {
+                        name: name,
+                        type: recordIndex,
+                        class: _class,
+                        ttl: record.ttl,
+                        priority: record.priority,
+                        weight: record.weight,
+                        port: record.port,
+                        target: record.target
+                    }
                 case 'MX':
                     return {
                         name: name,
@@ -493,7 +504,7 @@ module.exports = {
             if (!type) {
                 this.logger.error(`No record type found`, request.questions);
                 return false;
-            } else if (!["A", "AAAA", "CNAME", "SOA", "MX", "NS", "TXT", "CAA"].includes(type)) {
+            } else if (!["A", "AAAA", "CNAME", "SOA", "MX", "NS", "TXT", "CAA",'SRV'].includes(type)) {
                 this.logger.error(`Unsupported record type ${type} ${name} ${rinfo.address}:${rinfo.port} ${rinfo.family}`);
                 return false;
             }

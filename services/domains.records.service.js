@@ -74,7 +74,7 @@ module.exports = {
 
 			type: {
 				type: "enum",
-				values: ["A", "AAAA", "CNAME", "SOA", "MX", "NS", "TXT", "CAA"],
+				values: ["A", "AAAA", "CNAME", "SOA", "MX", "NS", "TXT", "CAA", "SRV"],
 				immutable: true,
 				required: true,
 			},
@@ -102,6 +102,20 @@ module.exports = {
 			priority: {
 				type: "number",
 				default: 5,
+				required: false,
+			},
+
+			//SRV
+			weight : {
+				type: "number",
+				required: false,
+			},
+			port : {
+				type: "number",
+				required: false,
+			},
+			target: {
+				type: "string",
 				required: false,
 			},
 
