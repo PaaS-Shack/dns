@@ -20,7 +20,7 @@ module.exports = {
 	version: 1,
 
 	mixins: [
-		DbService({collection:'dohs'}),
+		DbService({ collection: 'dohs' }),
 		Cron
 	],
 
@@ -71,7 +71,7 @@ module.exports = {
 
 			typeStr: {
 				type: "enum",
-				values: ["A", "AAAA", "CNAME", "SOA", "MX", "NS", "TXT", "CAA"],
+				values: ["A", "AAAA", "CNAME", "SOA", "MX", "NS", "TXT", "CAA", "SRV"],
 				immutable: true,
 				required: true,
 			},
@@ -115,6 +115,19 @@ module.exports = {
 			priority: {
 				type: "number",
 				default: 5,
+				required: false,
+			},
+
+			weight: {
+				type: "number",
+				required: false,
+			},
+			port: {
+				type: "number",
+				required: false,
+			},
+			target: {
+				type: "string",
 				required: false,
 			},
 
@@ -249,7 +262,7 @@ module.exports = {
 		resolveProvider: {
 			params: {
 				fqdn: { type: "string", optional: false },
-				type: { type: "enum", values: ["A", "AAAA", "CNAME", "SOA", "MX", "NS", "TXT"], default: 'A', optional: true },
+				type: { type: "enum", values: ["A", "AAAA", "CNAME", "SOA", "MX", "NS", "TXT", "SRV"], default: 'A', optional: true },
 				provider: { type: "enum", values: ["google", "cloudflare"], default: 'cloudflare', optional: true },
 				cache: { type: "boolean", default: true, optional: true },
 			},
@@ -274,7 +287,7 @@ module.exports = {
 		query: {
 			params: {
 				fqdn: { type: "string", optional: false },
-				type: { type: "enum", values: ["A", "AAAA", "CNAME", "SOA", "MX", "NS", "TXT"], default: 'A', optional: true },
+				type: { type: "enum", values: ["A", "AAAA", "CNAME", "SOA", "MX", "NS", "TXT", "SRV"], default: 'A', optional: true },
 				provider: { type: "enum", values: ["google", "cloudflare"], default: 'cloudflare', optional: true },
 				cache: { type: "boolean", default: true, optional: true },
 			},
@@ -397,6 +410,9 @@ module.exports = {
 					break
 				case 'TXT':
 					type = 16
+					break
+				case 'SRV':
+					type = 0x21
 					break
 				default:
 					// A
