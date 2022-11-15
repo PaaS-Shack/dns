@@ -75,7 +75,7 @@ module.exports = {
         createRecord: {
             params: {
                 fqdn: { type: "string", min: 3, optional: false },
-                type: { type: "enum", values: ["A", "AAAA", "CNAME", "SOA", "MX", "NS", "TXT", "CAA",'SRV'], optional: false },
+                type: { type: "enum", values: ["A", "AAAA", "CNAME", "SOA", "MX", "NS", "TXT", "CAA", 'SRV'], optional: false },
                 data: { type: "string", optional: false },
                 replace: { type: "string", optional: true },
 
@@ -131,7 +131,7 @@ module.exports = {
                 id: { type: "string", min: 3, optional: false },
                 fqdn: { type: "string", min: 3, optional: false },
                 network: { type: "string", optional: true },
-                type: { type: "enum", values: ["A", "AAAA", "CNAME", "SOA", "MX", "NS", "TXT", "CAA",'SRV'], optional: false },
+                type: { type: "enum", values: ["A", "AAAA", "CNAME", "SOA", "MX", "NS", "TXT", "CAA", 'SRV'], optional: false },
             },
             permissions: ['ddns.create'],
             async handler(ctx) {
@@ -504,7 +504,7 @@ module.exports = {
             if (!type) {
                 this.logger.error(`No record type found`, request.questions);
                 return false;
-            } else if (!["A", "AAAA", "CNAME", "SOA", "MX", "NS", "TXT", "CAA",'SRV'].includes(type)) {
+            } else if (!["A", "AAAA", "CNAME", "SOA", "MX", "NS", "TXT", "CAA", 'SRV'].includes(type)) {
                 this.logger.error(`Unsupported record type ${type} ${name} ${rinfo.address}:${rinfo.port} ${rinfo.family}`);
                 return false;
             }
@@ -521,10 +521,14 @@ module.exports = {
 
             if (records.length > 0) {
 
-                records = records.filter(record => record.priority !== -1);
+                let filtered = records.filter(record => record.priority !== -1);
 
-                for (let index = 0; index < records.length; index++) {
-                    const record = records[index];
+                if (filtered.length == 0) {
+                    filtered = records
+                }
+
+                for (let index = 0; index < filtered.length; index++) {
+                    const record = filtered[index];
                     answers.push(this.recordToAnswer(record, name, Packet.TYPE[record.type], question.class));
                 }
                 if (authoritative && type == 'SOA') {

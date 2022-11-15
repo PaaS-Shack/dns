@@ -149,6 +149,10 @@ module.exports = {
 			needEntity: true,
 			permissions: ['domains.get']
 		},
+		resolce: {
+			needEntity: true,
+			permissions: ['domains.get']
+		},
 		update: {
 			needEntity: true,
 			permissions: ['domains.update']
@@ -294,7 +298,6 @@ module.exports = {
 			},
 			permissions: ['domains.stats'],
 			async handler(ctx) {
-				
 				return this.scrapeAgents(ctx, 'v1.ddns.agent.stats')
 			}
 		},
