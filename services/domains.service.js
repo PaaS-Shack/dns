@@ -149,7 +149,7 @@ module.exports = {
 			needEntity: true,
 			permissions: ['domains.get']
 		},
-		resolce: {
+		resolve: {
 			needEntity: true,
 			permissions: ['domains.get']
 		},
