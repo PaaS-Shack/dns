@@ -1,92 +1,42 @@
-const path = require("path");
-
 const { ServiceBroker } = require("moleculer");
 
+const nodeID = require("os").hostname()
+const middlewares = require("middlewares");
+
 const config = {
-    namespace: "dns",
-
-    hotReload: true,
-    //nodeID: 'console',
-    middlewares: [
-
-    ],
-    logger: {
-        type: "Console",
-        options: {
-            level: "info",
-            colors: true,
-            moduleColors: true,
-            formatter: "short",
-            objectPrinter: null,
-            autoPadding: false
-        }
-    },
-
-    transporter: process.env.REDIS,
-
-    tracking: {
-        enabled: true,
-        stackTrace: true,
-        shutdownTimeout: 5000,
-    },
-
-
-    registry: {
-        discoverer: process.env.REDIS,
-        preferLocal: true
-    },
-
-
-    cacher: false && {
-        type: "Memory",
-        options: {
-            maxParamsLength: 60
-        }
-    },
-
-    validator: true,
-
-    metrics: {
-        enabled: false,
-        reporter: [
-            "Console"
-        ]
-    },
-
-    tracing: {
-        enabled: true,
-        exporter: "Console",
-        events: true,
-        stackTrace: true
-    },
-
-    replCommands: [],
-
-    metadata: {
-
-    },
-
-
-    created(broker) { },
-
-    started(broker) { },
-
-    stopped(broker) { }
+    namespace: "broker",
+    hotReload: false,
+    nodeID,
+    transporter: process.env.TRANSPORT,
+    middlewares,
 }
 
 // Create broker
 const broker = new ServiceBroker(config);
 
-broker.loadService("./services/dohs.service");
+const loadService = (path) => {
+    try {
+        broker.loadService(path);
+    } catch (e) {
+        console.log(e)
+    }
+}
 
-broker.loadService("./services/domains.dohs.service");
-broker.loadService("./services/domains.records.service");
-broker.loadService("./services/domains.resolver.service");
-broker.loadService("./services/domains.service");
 
+
+
+
+
+if(process.env.AGENT=='yes'){
+    loadService("./services/ddns.agent");
+}else{
+    loadService("./services/dohs.service");
+    loadService("./services/domains.records.service");
+    loadService("./services/domains.resolver.service");
+    loadService("./services/domains.service");
+}
 
 
 // Start server
-broker.start().then(() => broker.repl());
+broker.start()
 module.exports = broker
-
